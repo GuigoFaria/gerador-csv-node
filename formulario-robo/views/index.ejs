@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function mascaraData(val) {
+            var pass = val.value;
+            var expr = /[0123456789]/;
+
+            for (i = 0; i < pass.length; i++) {
+                // charAt -> retorna o caractere posicionado no índice especificado
+                var lchar = val.value.charAt(i);
+                var nchar = val.value.charAt(i + 1);
+
+                if (i == 0) {
+                    // search -> retorna um valor inteiro, indicando a posição do inicio da primeira
+                    // ocorrência de expReg dentro de instStr. Se nenhuma ocorrencia for encontrada o método retornara -1
+                    // instStr.search(expReg);
+                    if ((lchar.search(expr) != 0) || (lchar > 3)) {
+                        val.value = "";
+                    }
+
+                } else if (i == 1) {
+
+                    if (lchar.search(expr) != 0) {
+                        // substring(indice1,indice2)
+                        // indice1, indice2 -> será usado para delimitar a string
+                        var tst1 = val.value.substring(0, (i));
+                        val.value = tst1;
+                        continue;
+                    }
+
+                    if ((nchar != '/') && (nchar != '')) {
+                        var tst1 = val.value.substring(0, (i) + 1);
+
+                        if (nchar.search(expr) != 0)
+                            var tst2 = val.value.substring(i + 2, pass.length);
+                        else
+                            var tst2 = val.value.substring(i + 1, pass.length);
+
+                        val.value = tst1 + '/' + tst2;
+                    }
+
+                } else if (i == 4) {
+
+                    if (lchar.search(expr) != 0) {
+                        var tst1 = val.value.substring(0, (i));
+                        val.value = tst1;
+                        continue;
+                    }
+
+                    if ((nchar != '/') && (nchar != '')) {
+                        var tst1 = val.value.substring(0, (i) + 1);
+
+                        if (nchar.search(expr) != 0)
+                            var tst2 = val.value.substring(i + 2, pass.length);
+                        else
+                            var tst2 = val.value.substring(i + 1, pass.length);
+
+                        val.value = tst1 + '/' + tst2;
+                    }
+                }
+
+                if (i >= 6) {
+                    if (lchar.search(expr) != 0) {
+                        var tst1 = val.value.substring(0, (i));
+                        val.value = tst1;
+                    }
+                }
+            }
+
+            if (pass.length >= 10)
+                val.value = val.value.substring(0, 9);
+            return true;
+        }
+    </script>
+
+    <h1 class="col-md-6 offset-md-4">Robô Kit DP</h1>
+
+    <form class="col-md-6 offset-md-4" action="/criarDoc" method="POST">
+        <div class='col-md-3'>
+            <div class="form-group">
+                <label for="data-pagamento">Data desejada</label>
+                <!-- Datepicker as text field -->
+                <div class="input-group date" data-date-format="dd/mm/yyyy">
+                    <input type="text" class="form-control" placeholder="dd/mm/yyyy" onkeypress="mascaraData(this)" name="data">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="col-xs-4">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="aviso" name="aviso">
+                <label class="form-check-label" for="aviso">
+                    Aviso
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="trct" name="trct">
+                <label class="form-check-label" for="trct">
+                    TRCT
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="ponto" name="ponto">
+                <label class="form-check-label" for="ponto">
+                    Ponto
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="atestado-afastamento"
+                    name="atestado_afastamento">
+                <label class="form-check-label" for="atestado-afastamento">
+                    Atestado de Afastamento
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="demonstrativo-medias"
+                    name="demonstrativo_medias">
+                <label class="form-check-label" for="demonstrativo-medias">
+                    Demonstrativo de média
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="carta-apresentacao"
+                    name="carta_apresentacao">
+                <label class="form-check-label" for="carta-apresentacao">
+                    Carta de apresentação
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="ficha-atualizacao"
+                    name="ficha_atualizacao">
+                <label class="form-check-label" for="ficha-atualizacao">
+                    Ficha de atualização
+                </label>
+            </div>
+        </div>
+
+        <div class="col-xs-4">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="holerites" name="holerites">
+                <label class="form-check-label" for="holerites">
+                    Holerites
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="seguro-desemprego"
+                    name="seguro_desemprego">
+                <label class="form-check-label" for="seguro-desemprego">
+                    Seguro Desemprego
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="extrato-fgts" name="extrato_fgts">
+                <label class="form-check-label" for="extrato-fgts">
+                    Extrato de FGTS
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="extrato-analitico-fgts"
+                    name="extrato_analitico_fgts">
+                <label class="form-check-label" for="extrato-analitico-fgts">
+                    Extrato Analítico de FGTS
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="chave-fgts" name="chave_fgts">
+                <label class="form-check-label" for="chave-fgts">
+                    Chave de FGTS
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="extrato-fins-rescisorios"
+                    name="extrato_fins_rescisorios">
+                <label class="form-check-label" for="extrato-fins-rescisorios">
+                    Extrato para fins rescisórios
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="true" id="comprovante-pagamento"
+                    name="comprovante_pagamento">
+                <label class="form-check-label" for="comprovante-pagamento">
+                    Comprovante de pagamento
+                </label>
+            </div>
+
+
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary">Gerar documento</button>
+    </form>
+</body>
+
+</html>
